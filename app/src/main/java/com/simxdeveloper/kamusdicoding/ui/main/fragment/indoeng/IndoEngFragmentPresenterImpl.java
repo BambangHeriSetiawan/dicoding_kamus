@@ -1,6 +1,7 @@
 package com.simxdeveloper.kamusdicoding.ui.main.fragment.indoeng;
 
 import android.content.Context;
+import com.simxdeveloper.kamusdicoding.Apps;
 import com.simxdeveloper.kamusdicoding.data.database.AppDatabases;
 import com.simxdeveloper.kamusdicoding.data.presistence.LocalIndoEngDataSource;
 
@@ -20,21 +21,27 @@ public class IndoEngFragmentPresenterImpl {
   }
 
   public void getDataWordIndoEngl () {
+    presenter.showLoading(true);
     localIndoEngDataSource.getAll ().subscribe (
         wordsIndoEngs -> {
+          presenter.showLoading (false);
           presenter.initDataWord(wordsIndoEngs);
         },
         throwable -> {
+          presenter.showLoading (false);
           presenter.showError(throwable.getMessage ());
         }
     );
   }
 
   public void queryWord (String query) {
+    presenter.showLoading (false);
     localIndoEngDataSource.getAllBy (query).subscribe (
         wordsIndoEngs -> {
+          presenter.showLoading (false);
           presenter.initDataWord (wordsIndoEngs);
         },throwable -> {
+          presenter.showLoading (false);
           presenter.showError (throwable.getMessage ());
         }
     );

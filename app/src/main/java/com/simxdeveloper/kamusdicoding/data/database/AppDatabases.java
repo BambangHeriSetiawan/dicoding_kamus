@@ -1,20 +1,22 @@
 package com.simxdeveloper.kamusdicoding.data.database;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.content.ContentValues;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import com.simxdeveloper.kamusdicoding.data.dao.WordEngIndoDAO;
 import com.simxdeveloper.kamusdicoding.data.dao.WordIndoEngDAO;
 import com.simxdeveloper.kamusdicoding.data.entity.WordsEngIndo;
 import com.simxdeveloper.kamusdicoding.data.entity.WordsIndoEng;
 import com.simxdeveloper.kamusdicoding.data.helper.Const;
 import com.simxdeveloper.kamusdicoding.data.preload.PreloadDataHelper;
-import com.simxdeveloper.kamusdicoding.preference.GlobalPreference;
-import com.simxdeveloper.kamusdicoding.preference.PrefKey;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
 
 /**
  * User: simx Date: 23/05/18 23:57
@@ -30,6 +32,7 @@ public abstract class AppDatabases extends RoomDatabase {
       synchronized (AppDatabases.class){
         INSTANCE = Room.databaseBuilder (context.getApplicationContext (),AppDatabases.class,Const.DATABASE_NAME)
             .allowMainThreadQueries ()
+            .addCallback (callback)
             .build ();
       }
     }
@@ -39,9 +42,42 @@ public abstract class AppDatabases extends RoomDatabase {
     INSTANCE = null;
   }
 
+  public static RoomDatabase.Callback callback = new Callback () {
+    @Override
+    public void onCreate (@NonNull SupportSQLiteDatabase db) {
+      super.onCreate (db);
+      ArrayList<WordsEngIndo> wordsEngIndos = PreloadDataHelper.loadEngIndWord ();
+      ArrayList<WordsIndoEng> wordsIndoEngs = PreloadDataHelper.loadIndEngWord ();
+      insertEng(wordsEngIndos,db);
+      insertIndo(wordsIndoEngs,db);
+      Log.e ("AppDatabases", "onCreate: " );
+    }
+
+    @Override
+    public void onOpen (@NonNull SupportSQLiteDatabase db) {
+      super.onOpen (db);
+      Log.e ("AppDatabases", "onOpen: " );
+    }
+  };
   public static Builder<AppDatabases> build(Context context){
     return Room.databaseBuilder (context.getApplicationContext (),AppDatabases.class, Const.DATABASE_NAME)
             .allowMainThreadQueries ();
   }
+  private static void insertIndo (ArrayList<WordsIndoEng> wordsIndoEngs, SupportSQLiteDatabase db) {
+    for (WordsIndoEng wordsIndoEng : wordsIndoEngs){
+      ContentValues initialValues =  new ContentValues();
+      initialValues.put(Const.ROW_WORD, wordsIndoEng.getWord ());
+      initialValues.put(Const.ROW_DESC, wordsIndoEng.getDesc ());
+      db.insert (Const.TABLE_WORD_INDO_ENG,REPLACE,initialValues);
+    }
+  }
 
+  private static void insertEng (ArrayList<WordsEngIndo> wordsEngIndos, SupportSQLiteDatabase db) {
+    for (WordsEngIndo wordsEngIndo : wordsEngIndos){
+      ContentValues initialValues =  new ContentValues();
+      initialValues.put(Const.ROW_WORD, wordsEngIndo.getWord ());
+      initialValues.put(Const.ROW_DESC, wordsEngIndo.getDesc ());
+      db.insert (Const.TABLE_WORD_ENG_INDO,REPLACE,initialValues);
+    }
+  }
 }

@@ -8,12 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -36,6 +35,8 @@ public class EngIndoFragment extends Fragment implements EngIndoFragmentPresente
   @BindView(R.id.rcv_word)
   RecyclerView rcvWord;
   Unbinder unbinder;
+  @BindView(R.id.progress_view)
+  ProgressBar progressView;
 
   public EngIndoFragment () {
   }
@@ -68,13 +69,13 @@ public class EngIndoFragment extends Fragment implements EngIndoFragmentPresente
     searchView.setOnQueryTextListener (new OnQueryTextListener () {
       @Override
       public boolean onQueryTextSubmit (String query) {
-        presenter.queryWord(query);
+        presenter.queryWord (query);
         return false;
       }
 
       @Override
       public boolean onQueryTextChange (String newText) {
-        presenter.queryWord(newText);
+        presenter.queryWord (newText);
         return false;
       }
     });
@@ -84,7 +85,8 @@ public class EngIndoFragment extends Fragment implements EngIndoFragmentPresente
     });
     rcvWord.setHasFixedSize (true);
     rcvWord.setItemAnimator (new DefaultItemAnimator ());
-    rcvWord.setLayoutManager (new LinearLayoutManager (getContext (),LinearLayoutManager.VERTICAL,false));
+    rcvWord.setLayoutManager (
+        new LinearLayoutManager (getContext (), LinearLayoutManager.VERTICAL, false));
     rcvWord.setAdapter (adapterWordEngIndo);
   }
 
@@ -100,7 +102,16 @@ public class EngIndoFragment extends Fragment implements EngIndoFragmentPresente
 
   @Override
   public void showDetail (WordsEngIndo wordsEngIndo) {
-    DetailActivity.start (getContext (),wordsEngIndo.getWord (),wordsEngIndo.getDesc ());
+    DetailActivity.start (getContext (), wordsEngIndo.getWord (), wordsEngIndo.getDesc ());
+  }
+
+  @Override
+  public void showLoading (boolean show) {
+    if (show){
+      progressView.setVisibility (View.VISIBLE);
+    }else {
+      progressView.setVisibility (View.GONE);
+    }
   }
 
   @Override

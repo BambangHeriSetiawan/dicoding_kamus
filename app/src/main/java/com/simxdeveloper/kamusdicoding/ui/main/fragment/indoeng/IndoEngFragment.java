@@ -12,10 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
-import android.widget.SearchView.OnSuggestionListener;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +36,8 @@ public class IndoEngFragment extends Fragment implements IndoEngFragmentPresente
   @BindView(R.id.rcv_word)
   RecyclerView rcvWord;
   Unbinder unbinder;
+  @BindView(R.id.progress_view)
+  ProgressBar progressView;
 
   public IndoEngFragment () {
     // Required empty public constructor
@@ -57,20 +58,20 @@ public class IndoEngFragment extends Fragment implements IndoEngFragmentPresente
       Bundle savedInstanceState) {
     View view = inflater.inflate (R.layout.fragment_indo_eng, container, false);
     unbinder = ButterKnife.bind (this, view);
-    presenter = new IndoEngFragmentPresenterImpl (getContext (),this);
-    adapterWordIndoEng = new AdapterWordIndoEng (new ArrayList<> (),this);
+    presenter = new IndoEngFragmentPresenterImpl (getContext (), this);
+    adapterWordIndoEng = new AdapterWordIndoEng (new ArrayList<> (), this);
     return view;
   }
 
   @Override
   public void onViewCreated (@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated (view, savedInstanceState);
-    presenter.getDataWordIndoEngl();
+    presenter.getDataWordIndoEngl ();
     searchView.setOnQueryTextListener (new OnQueryTextListener () {
       @Override
       public boolean onQueryTextSubmit (String query) {
         Log.e ("IndoEngFragment", "onQueryTextSubmit: " + query);
-        presenter.queryWord(query);
+        presenter.queryWord (query);
         return false;
       }
 
@@ -86,7 +87,8 @@ public class IndoEngFragment extends Fragment implements IndoEngFragmentPresente
     });
     rcvWord.setHasFixedSize (true);
     rcvWord.setItemAnimator (new DefaultItemAnimator ());
-    rcvWord.setLayoutManager (new LinearLayoutManager (getContext (),LinearLayoutManager.VERTICAL,false));
+    rcvWord.setLayoutManager (
+        new LinearLayoutManager (getContext (), LinearLayoutManager.VERTICAL, false));
     rcvWord.setAdapter (adapterWordIndoEng);
   }
 
@@ -97,13 +99,22 @@ public class IndoEngFragment extends Fragment implements IndoEngFragmentPresente
 
   @Override
   public void showError (String message) {
-    Toast.makeText (getContext (),message,Toast.LENGTH_SHORT).show ();
+    Toast.makeText (getContext (), message, Toast.LENGTH_SHORT).show ();
+  }
+
+  @Override
+  public void showLoading (boolean show) {
+    if (show){
+      progressView.setVisibility (View.VISIBLE);
+    }else {
+      progressView.setVisibility (View.GONE);
+    }
   }
 
   @Override
   public void showDetail (WordsIndoEng wordsIndoEng) {
     Log.e ("IndoEngFragment", "showDetail: " + wordsIndoEng);
-    DetailActivity.start (getContext (),wordsIndoEng.getWord (),wordsIndoEng.getDesc ());
+    DetailActivity.start (getContext (), wordsIndoEng.getWord (), wordsIndoEng.getDesc ());
   }
 
   @Override

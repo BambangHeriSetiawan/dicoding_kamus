@@ -46,9 +46,8 @@ public class SplashActivity extends AppCompatActivity implements SplashPresenter
     setContentView (R.layout.activity_splash);
     ButterKnife.bind (this);
     presenter = new SplashPresenterImpl (this, this);
-    wordsEngIndos = PreloadDataHelper.loadEngIndWord ();
-    wordsIndoEngs = PreloadDataHelper.loadIndEngWord ();
-    new Handler ().postDelayed (() -> {gotoMain ();},500);
+    showProgress (true,"Loading data ....");
+    new Handler ().postDelayed (() -> gotoMain (),1000);
   }
 
   @Override

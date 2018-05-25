@@ -11,4 +11,6 @@ public interface EngIndoFragmentPresenter {
   void initDataWord (List<WordsEngIndo> wordsEngIndos);
 
   void showErorr (String message);
+
+  void showLoading (boolean show);
 }

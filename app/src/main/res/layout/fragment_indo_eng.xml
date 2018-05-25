@@ -6,5 +6,6 @@
   android:layout_height="match_parent"
   tools:context=".ui.main.fragment.indoeng.IndoEngFragment">
   <include layout="@layout/include_search_layout"/>
+  <include layout="@layout/include_base_progress"/>
   <include layout="@layout/include_rcv_word"/>
 </LinearLayout>

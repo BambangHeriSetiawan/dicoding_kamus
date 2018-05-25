@@ -11,4 +11,6 @@ public interface IndoEngFragmentPresenter {
   void initDataWord (List<WordsIndoEng> wordsIndoEngs);
 
   void showError (String message);
+
+  void showLoading (boolean show);
 }

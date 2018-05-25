@@ -2,6 +2,7 @@ package com.simxdeveloper.kamusdicoding.ui.main.fragment.engindo;
 
 import android.content.Context;
 import android.util.Log;
+import com.simxdeveloper.kamusdicoding.Apps;
 import com.simxdeveloper.kamusdicoding.data.database.AppDatabases;
 import com.simxdeveloper.kamusdicoding.data.presistence.LocalEngIndoDataSource;
 
@@ -20,24 +21,29 @@ public class EngIndoFragmentPresenterImpl {
   }
 
   public void loadDataWord () {
+    presenter.showLoading(true);
    localEngIndoDataSource.getAll ().subscribe (
        wordsEngIndos -> {
-         Log.e ("enee", "loadDataWord: " + wordsEngIndos.toString ());
          presenter.initDataWord (wordsEngIndos);
+         presenter.showLoading (false);
        },throwable -> {
+         presenter.showLoading (false);
          presenter.showErorr (throwable.getMessage ());
-       },() -> {
-         Log.e ("EngIndoFragmen", "loadDataWord: ");
        }
    );
   }
 
   public void queryWord (String query) {
+    presenter.showLoading (true);
     localEngIndoDataSource.getAllBy (query).subscribe (
         wordsEngIndos -> {
+          presenter.showLoading (false);
           presenter.initDataWord (wordsEngIndos);
         },
-        throwable -> presenter.showErorr (throwable.getMessage ())
+        throwable -> {
+          presenter.showLoading (false);
+          presenter.showErorr (throwable.getMessage ());
+        }
     );
   }
 }
