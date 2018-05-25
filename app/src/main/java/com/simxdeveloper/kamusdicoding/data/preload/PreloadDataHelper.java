@@ -1,4 +1,4 @@
-package com.simxdeveloper.kamusdicoding.data.helper;
+package com.simxdeveloper.kamusdicoding.data.preload;
 
 import android.content.res.Resources;
 import android.util.Log;
@@ -36,7 +36,6 @@ public class PreloadDataHelper {
       } while (line != null);
     } catch (Exception e) {
       e.printStackTrace();
-      Log.e ("PreloadDataHelper", "loadEngIndWord: " + e.getMessage ());
     }
     return wordsEngIndoArrayList;
   }
@@ -59,7 +58,6 @@ public class PreloadDataHelper {
       } while (line != null);
     } catch (Exception e) {
       e.printStackTrace();
-      Log.e ("PreloadDataHelper", "loadIndEngWord: " + e.getMessage ());
     }
     return wordsIndoEngArrayList;
   }

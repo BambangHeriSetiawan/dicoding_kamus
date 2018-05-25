@@ -22,6 +22,7 @@ public class EngIndoFragmentPresenterImpl {
   public void loadDataWord () {
    localEngIndoDataSource.getAll ().subscribe (
        wordsEngIndos -> {
+         Log.e ("enee", "loadDataWord: " + wordsEngIndos.toString ());
          presenter.initDataWord (wordsEngIndos);
        },throwable -> {
          presenter.showErorr (throwable.getMessage ());

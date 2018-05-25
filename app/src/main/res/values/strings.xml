@@ -8,7 +8,7 @@
   <string name="action_settings">Settings</string>
   <string name="nav_indo_eng">Indonesia - Inggris</string>
   <string name="nav_eng_indo">English - Indonesia</string>
-
+  <string name="loading">Loading data ....</string>
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
