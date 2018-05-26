@@ -107,4 +107,5 @@ public class MainActivity extends AppCompatActivity
     getSupportActionBar ().setDisplayShowTitleEnabled (true);
     getSupportActionBar ().setTitle (title);
   }
+
 }
