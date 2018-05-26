@@ -34,7 +34,6 @@ public class EngIndoFragment extends Fragment implements EngIndoFragmentPresente
   SearchView searchView;
   @BindView(R.id.rcv_word)
   RecyclerView rcvWord;
-  Unbinder unbinder;
   @BindView(R.id.progress_view)
   ProgressBar progressView;
 
@@ -55,17 +54,17 @@ public class EngIndoFragment extends Fragment implements EngIndoFragmentPresente
   public View onCreateView (LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate (R.layout.fragment_eng_indo, container, false);
-    unbinder = ButterKnife.bind (this, view);
+    ButterKnife.bind (this, view);
     presenter = new EngIndoFragmentPresenterImpl (this, getContext ());
+    presenter.loadDataWord ();
     adapterWordEngIndo = new AdapterWordEngIndo (new ArrayList<> (), this);
-
     return view;
   }
 
   @Override
   public void onViewCreated (@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated (view, savedInstanceState);
-    presenter.loadDataWord ();
+
     searchView.setOnQueryTextListener (new OnQueryTextListener () {
       @Override
       public boolean onQueryTextSubmit (String query) {
@@ -114,9 +113,4 @@ public class EngIndoFragment extends Fragment implements EngIndoFragmentPresente
     }
   }
 
-  @Override
-  public void onDestroyView () {
-    super.onDestroyView ();
-    unbinder.unbind ();
-  }
 }

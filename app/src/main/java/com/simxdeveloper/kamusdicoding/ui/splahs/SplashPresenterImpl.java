@@ -20,39 +20,17 @@ import java.util.ArrayList;
 public class SplashPresenterImpl {
   private Context context;
   private SplashPresenter presenter;
-  private LocalEngIndoDataSource localEngIndoDataSource;
-  private LocalIndoEngDataSource localIndoEngDataSource;
   public SplashPresenterImpl (SplashPresenter presenter, Context context) {
     this.presenter = presenter;
     this.context = context;
-   /* this.localEngIndoDataSource = new LocalEngIndoDataSource (AppDatabases.getINSTANCE (context).wordEngIndoDAO ());
-    this.localIndoEngDataSource = new LocalIndoEngDataSource (AppDatabases.getINSTANCE (context).wordIndoEngDAO ());*/
-  }
-
-  public void loadDataEngIndoWord (ArrayList<WordsEngIndo> wordsEngIndos) {
-    /*presenter.showProgress(true, Apps.getContext ().getResources ().getString (R.string.loading));
-    Observable.fromCallable (()->AppDatabases.getINSTANCE (context).wordEngIndoDAO ().insertAll (wordsEngIndos)).subscribeOn (
-        Schedulers.newThread ()).observeOn (AndroidSchedulers.mainThread ()).subscribe (longs -> {
-    },throwable -> {
-      Log.e ("SplashPresenterImpl", "loadDataEngIndoWord: " + throwable.getMessage ());
-    },() -> {
-          presenter.showProgress (false,"");
-          presenter.insertIndoEng ();
-    });
-*/
   }
 
 
-  public void loadDataIndoEngWord (ArrayList<WordsIndoEng> wordsIndoEngs) {
-    presenter.showProgress (true,Apps.getContext ().getResources ().getString (R.string.loading));
-    /*Observable.fromCallable (()->AppDatabases.getINSTANCE (context).wordIndoEngDAO ().insertAll (wordsIndoEngs)).subscribeOn (
-        Schedulers.newThread ()).observeOn (AndroidSchedulers.mainThread ()).subscribe (longs -> {
-    },throwable -> {
-      Log.e ("SplashPresenterImpl", "loadDataEngIndoWord: " + throwable.getMessage ());
-    },() -> {
-      presenter.showProgress (false,"");
+  public void checkTransactionDatabase (boolean isTransacation) {
+    if (isTransacation){
+      presenter.showProgress (true,Apps.getContext ().getResources ().getString (R.string.loading));
+    }else {
       presenter.gotoMain ();
-    });*/
+    }
   }
-
 }
